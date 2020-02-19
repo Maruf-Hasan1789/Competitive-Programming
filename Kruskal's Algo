@@ -1,0 +1,103 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define M 1000000
+ 
+long long pr[M];
+ 
+struct edge
+{
+    long long u,v,w;
+    bool operator<(const edge& p)const
+    {
+        return w<p.w;
+    }
+};
+vector<edge>e;
+long long root(long long i)
+{
+   if(pr[i]==i)
+    return i;
+    return pr[i]=root(pr[i]);
+}
+ 
+long long mst(long long n)
+{
+    sort(e.begin(),e.end());
+    for(long long i=1;i<=n;i++)
+        pr[i]=i;
+    long long cnt=0,s=0;
+    for(int i=0;i<e.size();i++)
+    {
+        long long u=root(e[i].u);
+        long long v=root(e[i].v);
+        if(u!=v)
+        {
+            pr[u]=v;
+            cnt++;
+            s+=e[i].w;
+            if(cnt==n-1)
+                break;
+        }
+    }
+ 
+    return s;
+}
+int main()
+{
+    int n,space=0;
+    while(scanf("%d",&n)==1)
+    {
+ 
+    int m;
+    int chal=n;
+    n--;
+    long long sum=0;
+    while(n--)
+    {
+        int x,y,w;
+        cin>>x>>y>>w;
+        sum+=w;
+       // //edge get;
+        //get.u=x;
+        //get.v=y;
+        //get.w=w;
+        //e.push_back(get);
+    }
+    int k;
+    cin>>k;
+    while(k--)
+    {
+        int x,y,w;
+        cin>>x>>y>>w;
+        edge get;
+        get.u=x;
+        get.v=y;
+        get.w=w;
+        e.push_back(get);
+    }
+    cin>>m;
+    while(m--)
+    {
+        int x,y,w;
+        cin>>x>>y>>w;
+        edge get;
+        get.u=x;
+        get.v=y;
+        get.w=w;
+        e.push_back(get);
+    }
+    long long bal=mst(chal);
+    if(space==0)
+    {
+        space=1;
+    }
+    else
+    {
+        cout<<endl;
+    }
+    cout<<sum<<endl;
+    cout<<bal<<endl;
+    e.clear();
+    }
+    return 0;
+}
