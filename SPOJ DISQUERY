@@ -1,0 +1,168 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define M 100007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+#define fast_in_out ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+//const int fx[]= {+1,-1,+0,+0};
+//const int fy[]= {+0,+0,+1,-1};
+//const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+#define MX 101000
+vector<pair<int,int>>adj[MX];
+vector<int>cost[MX];
+int L[MX];
+int SparseTable[MX][20];
+int T[MX];
+int MinTable[MX][22];
+int MaxTable[MX][22];
+int ansMax,ansMin;
+int dist[MX];
+bool visited[MX];
+
+void dfs(int from,int u,int w,int depth)
+{
+    T[u]=from;
+    L[u]=depth;
+    MinTable[u][0]=w;
+    MaxTable[u][0]=w;
+    for(int i=0;i<adj[u].size();i++)
+    {
+        int v=adj[u][i].first;
+        if(v==from)
+            continue;
+        dfs(u,v,adj[u][i].second,depth+1);
+    }
+    return;
+}
+
+
+void LCA_initialize(int N)
+{
+    memset(SparseTable,-1,sizeof SparseTable);
+    int i,j;
+    for(i=0;i<N;i++)
+    {
+        SparseTable[i][0]=T[i];
+    }
+    for(j=1;(1<<j)<N;j++)
+    {
+        for(i=0;i<N;i++)
+        {
+            if(SparseTable[i][j-1]!=-1)
+            {
+                SparseTable[i][j]=SparseTable[SparseTable[i][j-1]][j-1];
+                MinTable[i][j]=min(MinTable[i][j-1],MinTable[SparseTable[i][j-1]][j-1]);
+                MaxTable[i][j]=max(MaxTable[i][j-1],MaxTable[SparseTable[i][j-1]][j-1]);
+            }
+        }
+    }
+}
+
+
+void LCA_query(int N,int p,int q)
+{
+
+    int tmp,log,i;
+    if(L[p]<L[q])
+    {
+       swap(p,q);
+    }
+    log=1;
+    while(true)
+    {
+        int next=log+1;
+        if((1<<next)>L[p])
+            break;
+        log++;
+    }
+
+    for(i=log;i>=0;i--)
+    {
+
+        if(L[p]-(1<<i)>=L[q])
+        {
+            ansMin=min(ansMin,MinTable[p][i]);
+            ansMax=max(ansMax,MaxTable[p][i]);
+            p=SparseTable[p][i];
+        }
+
+    }
+
+    if(p==q)
+        return ;
+    for(i=log;i>=0;i--)
+    {
+        if(SparseTable[p][i]!=-1 && SparseTable[p][i]!=SparseTable[q][i])
+        {
+            ansMin=min(ansMin,MinTable[p][i]);
+            ansMin=min(ansMin,MinTable[q][i]);
+            ansMax=max(ansMax,MaxTable[p][i]);
+            ansMax=max(ansMax,MaxTable[q][i]);
+            p=SparseTable[p][i];
+            q=SparseTable[q][i];
+
+        }
+
+    }
+
+    ansMin=min(ansMin,min(MinTable[p][0],MinTable[q][0]));
+    ansMax=max(ansMax,max(MaxTable[p][0],MaxTable[q][0]));
+//    return T[p];
+}
+
+int main()
+{
+
+    int n;
+    cin>>n;
+    for(int i=0;i<n-1;i++)
+    {
+        int x,y,z;
+        cin>>x>>y>>z;
+        x--;
+        y--;
+
+        adj[x].pb(mp(y,z));
+          adj[y].pb(mp(x,z));
+    }
+
+    dfs(-1,0,0,0);
+    LCA_initialize(n);
+
+    int q;
+    cin>>q;
+    while(q--)
+    {
+        int x,y;
+        cin>>x>>y;
+        x--;
+        y--;
+        ansMax=0;
+        ansMin=INF;
+        LCA_query(n,x,y);
+       cout<<ansMin<<" "<<ansMax<<endl;
+    }
+//    for(int i=0;i<MX;i++)
+//    {
+//        T[i]=0;
+//        L[i]=0;
+//        adj[i].clear();
+//    }
+//
+
+//    }
+//    return 0;
+    return 0;
+}
+
