@@ -1,0 +1,144 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define pb push_back
+
+#define M 100007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+#define fast_in_out ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+//const int fx[]= {+1,-1,+0,+0};
+//const int fy[]= {+0,+0,+1,-1};
+//const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+
+
+
+struct data
+{
+    int sum,pref,suff,ans;
+}tree[400000];
+
+int arr[100000];
+
+
+
+data make_data(int val)
+{
+    data res;
+    res.sum=val;
+
+    res.ans=val;
+    res.pref=val;
+    res.suff=val;
+//    cout<<res.sum<<" "<<res.ans<<" "<<res.pref<<" "<<res.suff<<endl;
+    return res;
+}
+
+
+data combine(data a,data b)
+{
+    data res;
+    res.sum=a.sum+b.sum;
+    res.pref=max(a.pref,a.sum+b.pref);
+    res.suff=max(b.suff,b.sum+a.suff);
+    res.ans=max(max(a.ans,b.ans),a.suff+b.pref);
+    return res;
+}
+void build(int node,int b,int e)
+{
+    if(b==e)
+    {
+        tree[node]=make_data(arr[b]);
+        return;
+//        cout<<tree[node].ans<<endl;
+    }
+    else
+    {
+        int mid=(b+e)/2;
+        build(node*2,b,mid);
+        build(node*2+1,mid+1,e);
+        tree[node]=combine(tree[node*2],tree[node*2+1]);
+    }
+}
+
+void update(int node,int b,int e,int pos,int val)
+{
+    if(b==e)
+    {
+//        cout<<b<<" "<<val<<endl;
+        tree[node]=make_data(val);
+//        cout<<tree[node].sum<<endl;
+    }
+    else
+    {
+        int mid=(b+e)/2;
+        if(pos<=mid)
+        {
+            update(2*node,b,mid,pos,val);
+        }
+        else
+        {
+            update(2*node+1,mid+1,e,pos,val);
+        }
+        tree[node]=combine(tree[2*node],tree[2*node+1]);
+    }
+}
+
+data query(int node,int b,int e,int l,int r)
+{
+    if(l>r)
+        return make_data(0);
+    if(b==l && e==r)
+    {
+//        cout<<b<<" "<<e<<endl;
+        return tree[node];
+    }
+    int mid=(b+e)/2;
+    if(r<=mid)
+        return query(node*2,b,mid,l,r);
+    else if(l>mid)
+        return query(node*2+1,mid+1,e,l,r);
+    else
+    {
+       return  combine(query(node*2,b,mid,l,min(r,mid))
+            ,query(node*2+1,mid+1,e,max(l,mid+1),r));
+    }
+}
+
+
+
+int main()
+{
+    int n;
+    cin>>n;
+    for(int i=1;i<=n;i++)
+    {
+        cin>>arr[i];
+    }
+    build(1,1,n);
+    int q;
+    cin>>q;
+    while(q--)
+    {
+        int task,x,y;
+        cin>>task>>x>>y;
+        if(task)
+        {
+            int ans=query(1,1,n,x,y).ans;
+            cout<<ans<<endl;
+        }
+        else
+        {
+            update(1,1,n,x,y);
+
+        }
+    }
+    return 0;
+}
+
