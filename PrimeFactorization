@@ -1,0 +1,160 @@
+#include<stdio.h>
+#include<bits/stdc++.h>
+#include<algorithm>
+using namespace std;
+ 
+#define M 10000000
+bool mark[M];
+vector<int>prime;
+int lst[1000];
+int lstsize;
+int lstsize1;
+int lst1[1000];
+ 
+void sieve()
+{
+    int i,j;
+    prime.push_back(2);
+    for(i=3;i*i<=M;i+=2)
+    {
+        if(mark[i]==false)
+        {
+            for(j=i*i;j<=M;j+=2*i)
+                mark[j]=true;
+        }
+    }
+    for(i=3;i<=M;i+=2)
+    {
+        if(mark[i]==false)
+            prime.push_back(i);
+    }
+ 
+}
+ 
+void primefac(int n)
+{
+    int i,j;
+    int sqrtN=sqrt(n)+1;
+    for(i=0;prime[i]<sqrtN;i++)
+    {
+        if(n%prime[i]==0)
+        {
+            while(n%prime[i]==0)
+            {
+                n/=prime[i];
+                lst[lstsize++]=prime[i];
+            }
+        }
+    }
+    if(n>1){
+        lst[lstsize++]=n;
+    }
+ 
+}
+void primefac1(int m)
+{
+    int i,j;
+    int sqrtN=sqrt(m)+1;
+    for(i=0;prime[i]<=sqrtN;i++)
+    {
+        if(m%prime[i]==0)
+        {
+            while(m%prime[i]==0)
+            {
+                m/=prime[i];
+                lst1[lstsize1++]=prime[i];
+            }
+        }
+ 
+    }
+    if(m>1){
+        lst1[lstsize1++]=m;
+    }
+ 
+}
+ 
+int primefauck(int m)
+{
+    int listsize3=0;
+    int sqrtN=sqrt(m)+1,max=0;
+    for(int i=0;prime[i]<=sqrtN;i++)
+    {
+        if(m%prime[i]==0)
+        {
+            while(m%prime[i]==0){
+            m/=prime[i];
+            }
+         if(prime[i]>max)max=prime[i];
+        }
+    }
+    if(m>max)
+    {  max=m;}
+    return max;
+}
+ 
+ 
+ 
+ 
+ 
+int main()
+{
+    sieve();
+    int  n,i,fac=0,m;
+   while(scanf("%d %d",&n,&m)==2)
+   {
+       int k=primefauck(m);
+       if(n==0)
+       {
+            printf("%d divides %d!\n",m,n);
+       }
+        else if(n>=m)
+        {
+            printf("%d divides %d!\n",m,n);
+        }
+ 
+        else if(k>n )
+        {
+                printf("%d does not divide %d!\n",m,n);
+ 
+        }
+        else{
+       lstsize=0;
+       lstsize1=0;
+    for(i=n;i>0;i--)
+    {1
+        primefac(i);
+    }
+ 
+    primefac1(m);
+    int count=0;
+ 
+    int k=0;
+ 
+ 
+    sort(lst1,lst1+lstsize1);
+    sort(lst,lst+lstsize);
+ 
+    for(i=0;i<lstsize1;i++)
+    {
+        for(int j=k;j<lstsize;j++)
+        {
+            if(lst1[i]==lst[j])
+            {
+                count++;
+                k=j+1;
+                break;
+            }
+        }
+ 
+    }
+    if(count==lstsize1)
+    {
+        printf("%d divides %d!\n",m,n);
+    }
+    else
+        printf("%d  does not divide %d!\n",m,n);
+}
+   }
+    return 0;
+ 
+}
