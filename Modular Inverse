@@ -1,0 +1,194 @@
+
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define M 100007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+#define fast_in_out ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+//const int fx[]= {+1,-1,+0,+0};
+//const int fy[]= {+0,+0,+1,-1};
+//const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+
+//*******************//
+//when a and m are coprime
+
+
+//C function for extended euclidean algorithm
+
+
+int gcdExtended(int a,int b,int *x,int *y)
+{
+    //base case
+    if(a==0)
+    {
+        *x=0;
+        *y=1;
+        return b;
+    }
+    int x1,y1;//to store results of recursive call
+
+    int gcd=gcdExtended(b%a,a,&x1,&y1);
+    //update x and y using results of recursive
+    //call
+    *x=y1-(b/a)*x1;
+    *y=x1;
+    return gcd;
+}
+
+
+
+
+
+
+
+
+
+void modInverse(int a,int m)
+{
+    int x,y;
+    int g=gcdExtended(a,m,&x,&y);
+    if(g!=1)
+    {
+        cout<<"Inverse does not exist"<<endl;
+    }
+    else
+    {
+        //m is added to handle negative x
+        int res=(x%m+m)%m;
+        cout<<"Modular Multiplicative inverse is "<<res<<endl;
+    }
+}
+
+//iterative implementation
+
+int modInverseIterative(int a,int m)
+{
+    int m0=m;
+    int y=0,x=1;
+    if(m==1)
+        return 0;
+    while(a>1)
+    {
+        //q is quotient
+        int q=a/m;
+        int t=m;
+
+
+        // m is remainder now,process same as Euclid algo
+        m=a%m;
+        a=t;
+        t=y;
+        //update x,y
+        y=x-q*y;
+        x=t;
+    }
+    if(x<0)
+    {
+        x+=m0;
+    }
+    return x;
+}
+
+
+//*****************************
+//************************
+//when m is prime
+
+
+
+
+
+
+//to compute x^y under modulo m
+
+int power(int x,unsigned int y,unsigned int m)
+{
+    if(y==0)
+        return 1;
+    int p=power(x,y/2,m)%m;
+    p=(p*p)%m;
+    return (y%2==0)?p:(x*p)%m;
+
+}
+int gcd(int a,int b)
+{
+    if(a==0)
+        return b;
+    return gcd(b%a,a);
+}
+
+
+
+
+
+
+void modInversewhen_m_is_prime(int a,int m)
+{
+    int g=gcd(a,m);
+    if(g!=1)
+    {
+        cout<<"Inverse doesn't exist"<<endl;
+    }
+    else
+    {
+        //if a and m are relatively prime then modulo inverse
+        //is a^(m-2) mod m
+        cout<<"Modular multiplicative inverse is ";
+        cout<<power(a,m-2,m);
+    }
+}
+
+
+
+//modular inverse of all number from 1 to m-1
+
+
+int inv[100000];
+
+void modularInverseAllNumber(int m)// m must be prime
+{
+    inv[1]=1;
+    for(int i=2;i<m;i++)
+    {
+        inv[i]=(m-(m/i)*inv[m%i]%m)%m;
+    }
+}
+int main()
+{
+    fast_in_out;
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+//  int a,m;
+//  cin>>a>>m;
+////  a and m are coprime
+//  modInverse(a,m);
+  //int ans=modInverseIterative(a,m);
+ //cout<<ans<<endl;
+  //modInversewhen_m_is_prime(a,m);
+  int m;
+  cin>>m;
+  modularInverseAllNumber(m);// m must be prime
+  for(int i=2;i<m;i++)
+  {
+      cout<<i<<" "<<inv[i]<<endl;
+  }
+  return 0;
+
+}
+
