@@ -1,16 +1,34 @@
-#include<stdio.h>
+
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
 #include<bits/stdc++.h>
-#include<algorithm>
 using namespace std;
- 
-#define M 10000000
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define M 1000007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+#define fast_in_out ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+//const int fx[]= {+1,-1,+0,+0};
+//const int fy[]= {+0,+0,+1,-1};
+//const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+
+
+
 bool mark[M];
 vector<int>prime;
-int lst[1000];
-int lstsize;
-int lstsize1;
-int lst1[1000];
- 
+vector<int>fac;
+
 void sieve()
 {
     int i,j;
@@ -28,9 +46,9 @@ void sieve()
         if(mark[i]==false)
             prime.push_back(i);
     }
- 
+
 }
- 
+
 void primefac(int n)
 {
     int i,j;
@@ -42,119 +60,24 @@ void primefac(int n)
             while(n%prime[i]==0)
             {
                 n/=prime[i];
-                lst[lstsize++]=prime[i];
+                fac.pb(n);
             }
         }
     }
     if(n>1){
-        lst[lstsize++]=n;
+        fac.pb(n);
     }
- 
+
 }
-void primefac1(int m)
-{
-    int i,j;
-    int sqrtN=sqrt(m)+1;
-    for(i=0;prime[i]<=sqrtN;i++)
-    {
-        if(m%prime[i]==0)
-        {
-            while(m%prime[i]==0)
-            {
-                m/=prime[i];
-                lst1[lstsize1++]=prime[i];
-            }
-        }
- 
-    }
-    if(m>1){
-        lst1[lstsize1++]=m;
-    }
- 
-}
- 
-int primefauck(int m)
-{
-    int listsize3=0;
-    int sqrtN=sqrt(m)+1,max=0;
-    for(int i=0;prime[i]<=sqrtN;i++)
-    {
-        if(m%prime[i]==0)
-        {
-            while(m%prime[i]==0){
-            m/=prime[i];
-            }
-         if(prime[i]>max)max=prime[i];
-        }
-    }
-    if(m>max)
-    {  max=m;}
-    return max;
-}
- 
- 
- 
- 
- 
+
+
 int main()
 {
-    sieve();
-    int  n,i,fac=0,m;
-   while(scanf("%d %d",&n,&m)==2)
-   {
-       int k=primefauck(m);
-       if(n==0)
-       {
-            printf("%d divides %d!\n",m,n);
-       }
-        else if(n>=m)
-        {
-            printf("%d divides %d!\n",m,n);
-        }
- 
-        else if(k>n )
-        {
-                printf("%d does not divide %d!\n",m,n);
- 
-        }
-        else{
-       lstsize=0;
-       lstsize1=0;
-    for(i=n;i>0;i--)
-    {1
-        primefac(i);
-    }
- 
-    primefac1(m);
-    int count=0;
- 
-    int k=0;
- 
- 
-    sort(lst1,lst1+lstsize1);
-    sort(lst,lst+lstsize);
- 
-    for(i=0;i<lstsize1;i++)
-    {
-        for(int j=k;j<lstsize;j++)
-        {
-            if(lst1[i]==lst[j])
-            {
-                count++;
-                k=j+1;
-                break;
-            }
-        }
- 
-    }
-    if(count==lstsize1)
-    {
-        printf("%d divides %d!\n",m,n);
-    }
-    else
-        printf("%d  does not divide %d!\n",m,n);
+    fast_in_out;
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+
 }
-   }
-    return 0;
- 
-}
+
