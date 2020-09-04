@@ -1,0 +1,114 @@
+
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define M 100007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+#define fast_in_out ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+//const int fx[]= {+1,-1,+0,+0};
+//const int fy[]= {+0,+0,+1,-1};
+//const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+#define Max_N 110
+
+int dp[Max_N][Max_N];
+
+struct Matrix
+{
+    int row,col;
+    Matrix(int r,int c)
+    {
+        row=r;
+        col=c;
+    }
+};
+
+vector<Matrix>mat;
+
+int Merge_Cost(int i,int j,int k)
+{
+    return mat[i].row*mat[j].col*mat[k].col;
+}
+
+int myfunc(int i,int j)
+{
+    if(i>=j)
+    {
+        return 0;
+    }
+    if(dp[i][j]!=-1)
+    {
+        return dp[i][j];
+    }
+    int ans=INF;
+    for(int k=i;k<j;k++)
+    {
+        int res_left=myfunc(i,k);
+        int res_right=myfunc(k+1,j);
+        int cost=(res_left+res_right)+Merge_Cost(i,j,k);
+        ans=min(ans,cost);
+    }
+    dp[i][j]=ans;
+    return dp[i][j];
+}
+
+
+//****ITERATIVE VERSION****//
+
+int evaluate(int i,int j)
+{
+    if(i>=j)
+    {
+        return 0;
+    }
+    return dp[i][j];
+}
+
+int iterativeMyfunc()
+{
+    int n=mat.size();
+    for(int sz=1;sz<=n;sz++)
+    {
+        for(int i=0;i<n;i++)
+        {
+            int j=i+sz-1;
+            int ans=INF;
+            for(int k=i;k<j;k++)
+            {
+                int res_left=evaluate(i,k);
+                int res_right=evaluate(k+1,j);
+                int cost=(res_left+res_right)+Merge_Cost(i,j,k);
+                ans=min(ans,cost);
+            }
+            dp[i][j]=ans;
+        }
+    }
+    return dp[0][n-1];
+}
+
+
+
+
+int main()
+{
+    fast_in_out;
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+
+}
+
