@@ -1,0 +1,10 @@
+The algorithm is this. For a number n in base 10, if we wish to convert n to base k then we do the following.
+
+digits = []
+while n > 0:
+    digit = n%k
+    digits.append(digit)
+    n /= k
+n_k = reversed(digits)
+
+where n_k is the number n in base k.
