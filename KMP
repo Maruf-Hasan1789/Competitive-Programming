@@ -1,0 +1,133 @@
+
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define M 100007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+#define MAX 100000
+//const int fx[]= {+1,-1,+0,+0};
+//const int fy[]= {+0,+0,+1,-1};
+//const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+int failure[M];
+
+
+
+void build_failure_function(string pattern,int m)
+{
+    failure[0]=0;
+    failure[1]=0;
+    for(int i=2;i<=m;i++)
+    {
+        //i is the length of the prefix we are dealing with
+        //j is the index of the largest next partial match
+        //(the largest suffix/prefix) of the string under index i-1
+        int j=failure[i-1];
+        while(true)
+        {
+
+        if(pattern[j]==pattern[i-1])
+        {
+            // check the last character of prefix of length i expands the current candidate
+            failure[i]=j+1;
+            break;
+        }
+        if(j==0)
+        {
+            //if we cannot expand even the empty string
+            failure[i]=0;
+            break;
+        }
+        //else go to the next best candidate partial match
+        j=failure[j];
+
+        }
+    }
+}
+
+
+bool kmp(string text,string pattern)
+{
+    int n=text.size();
+    int m=pattern.size();
+    build_failure_function(pattern,m);
+
+    int i=0;//the initial state of automation is the empty string
+    int j=0; //the first character of the text
+    while(true)
+    {
+        if(j==n)
+        {
+            return false;
+        }
+        if(text[j]==pattern[i])
+        {
+            i++;
+            j++;
+        if(i==m)
+        {
+            return true;
+        }
+
+
+        }
+        else
+        {
+            if(i==0)
+            {
+                //if we reached the empty string and failed to expand
+                //even it ;we go to the
+                //next character from the text,the state of automation
+                //remains zero
+                j++;
+            }
+            else
+            {
+                i=failure[i];
+            }
+        }
+    }
+
+    return false;
+}
+
+int main()
+{
+
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+    string a,b;
+    cin>>a>>b;
+    if(kmp(a,b))
+    {
+        cout<<"YES"<<endl;
+    }
+    else
+    {
+        cout<<"NO"<<endl;
+    }
+
+
+
+
+
+///Before submit=>
+///    *check for integer overflow,array bounds
+///    *check for n=1
+}
+
