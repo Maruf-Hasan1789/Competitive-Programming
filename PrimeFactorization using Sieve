@@ -1,0 +1,86 @@
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<ll,ll>
+#define pll pair<ll,ll>
+#define M 10000007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+#define fast_in_out ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+//const ll fx[]= {+1,-1,+0,+0};
+//const ll fy[]= {+0,+0,+1,-1};
+//const ll fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const ll fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const ll fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const ll fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+ll SPF[M+10];
+bool mark[M+10];
+
+void sieve_SPF()
+{
+    for(ll i=2;i<=M;i+=2)
+    {
+        SPF[i]=2;
+
+    }
+
+    for(ll i=3;i<M;i+=2)
+    {
+        if(mark[i]==false)
+        {
+            SPF[i]=i;
+            for(ll j=i;(j*i)<M;j+=2)
+            {
+
+                if(mark[i*j]==false)
+                {
+                    mark[i*j]=true;
+                    SPF[i*j]=i;
+                }
+            }
+        }
+    }
+}
+
+vector<int> get_prime_div(int x)
+{
+    vector<int>ret;
+    while(x!=1)
+    {
+        ret.pb(SPF[x]);
+        x=x/SPF[x];
+
+    }
+    return ret;
+}
+int main()
+{
+    fast_in_out;
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+  //cout<<"AS"<<endl;
+  sieve_SPF();
+ // cout<<"asd"<<endl;
+  for(ll i=2;i<=100;i++)
+  {
+      vector<int>v;
+      v=get_prime_div(i);
+      cout<<"NUM "<<i<<": ";
+      for(int i=0;i<v.size();i++)
+      {
+          cout<<v[i]<<" ";
+      }
+      cout<<endl;
+  }
+
+}
