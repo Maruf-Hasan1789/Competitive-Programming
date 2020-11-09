@@ -1,0 +1,116 @@
+
+
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define M 100007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+
+
+
+ll compute_hash1(string const& s)
+{
+    int p=31;
+    //const
+    int m=1e9+9;
+    ll hash_val=0;
+    ll p_pow=1;
+    for(int i=0;i<s.size();i++)
+    {
+        hash_val=(hash_val+(s[i]-'a'+1)*p_pow)%m;
+        p_pow=(p_pow*p)%m;
+    }
+    return hash_val;
+}
+
+ll compute_hash2(string const& s)
+{
+     int p=37;
+    int m=1e9+21;
+     ll hash_val=0;
+    ll p_pow=1;
+    for(int i=0;i<s.size();i++)
+    {
+        hash_val=(hash_val+(s[i]-'a'+1)*p_pow)%m;
+        p_pow=(p_pow*p)%m;
+    }
+    return hash_val;
+}
+
+void  myfunc(string pattern,string text)
+{
+    ll pat1=compute_hash1(pattern);
+    ll pat2=compute_hash2(pattern);
+    int k=pattern.size();
+
+    const int base1=31,mod1=1e9+9;
+  //  cout<<pat1<<" "<<pat2<<endl;
+
+    int n=text.size();
+
+    vector<ll>p_pow1(n);
+    vector<ll>p_pow2(n);
+    p_pow1[0]=1;
+    p_pow2[0]=1;
+    const int mod2=1e9+21;
+    const int base2=37;
+    for(int i=1;i<n;i++)
+    {
+        p_pow1[i]=(p_pow1[i-1]*base1)%mod1;
+        p_pow2[i]=(p_pow2[i-1]*base2)%mod2;
+    }
+    vector<ll>hash1(n+1,0);
+    vector<ll>hash2(n+1,0);
+
+    for(int i=0;i<text.size();i++)
+    {
+        hash1[i+1]=(hash1[i]+(text[i]-'a'+1)*p_pow1[i])%mod1;
+        hash2[i+1]=(hash2[i]+(text[i]-'a'+1)*p_pow2[i])%mod2;
+    }
+
+    for(int i=0;i+k-1<text.size();i++)
+    {
+        ll cur_hash1=(hash1[i+k]+mod1-hash1[i])%mod1;
+        ll pat_hash1=(pat1*p_pow1[i])%mod1;
+        ll cur_hash2=(hash2[i+k]+mod2-hash2[i])%mod2;
+        ll pat_hash2=(pat2*p_pow2[i])%mod2;
+        if(cur_hash1==pat_hash1 && cur_hash2==pat_hash2)
+        {
+            cout<<i<<endl;
+        }
+//        cout<<cur_hash<<" "<<pat_hash<<endl;
+    }
+}
+
+int main()
+{
+
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+
+    string pattern,text;
+    cin>>pattern;
+    cin>>text;
+
+    myfunc(pattern,text);
+ 
+
+
+///Before submit=>
+///    *check for integer overflow,array bounds
+///    *check for n=1
+}
+
