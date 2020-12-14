@@ -36,7 +36,7 @@ int bigmodRecur(int b,int p,int m)
     else
     {
         //b^p=b*b^(p-1)
-        return (b*bigmodRecur(b,p-1,m));
+        return (b*bigmodRecur(b,p-1,m))%m;
     }
 }
 
