@@ -50,9 +50,14 @@ int gcdExtended(int a,int b,int *x,int *y)
 }
 
 
+/*fac[0]=1;
+    for(int i=2;i<=100;i++)
+    {
+        fac[i]=fac[i-1]*i;
+        inv[i]=(inv[i]*inv[i-1])%MOD;
+    }
 
-
-
+*/
 
 
 
