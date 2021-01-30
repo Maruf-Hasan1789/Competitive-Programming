@@ -1,0 +1,66 @@
+
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define M 100007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+
+//const int fx[]= {+1,-1,+0,+0};
+//const int fy[]= {+0,+0,+1,-1};
+//const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+
+
+int gcd(int a, int b)
+{
+ return b ? gcd(b, a%b) : a;
+}
+
+
+//Given an integer n and a prime number p,
+// find the largest x such that
+//px (p raised to power x) divides n! (factorial)
+
+
+int largestpower(int n,int p)
+{
+    int ret=0;
+    while(n)
+    {
+       n=n/p;
+       ret+=n;
+    }
+    return ret;
+}
+
+
+int main()
+{
+
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+    int n,p;
+    cin>>n>>p;
+    int ans=largestpower(n,p);
+    cout<<ans<<endl;
+
+///Before submit=>
+///    *check for integer overflow,array bounds
+///    *check for n=1
+}
+
