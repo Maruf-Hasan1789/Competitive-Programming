@@ -1,0 +1,91 @@
+
+
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define MaxN 201007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+
+//const int fx[]= {+1,-1,+0,+0};
+//const int fy[]= {+0,+0,+1,-1};
+//const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+
+
+int gcd(int a, int b)
+{
+ return b ? gcd(b, a%b) : a;
+}
+
+ll bigmod(ll b,ll p,ll m)
+{
+    ll res=1LL%m;
+    ll x=b%m;
+    while(p)
+    {
+        if( p & 1LL )res=(res*x) % m;
+        x=(x*x)%m;
+        p >>=1LL;
+    }
+    return res;
+}
+
+
+int BIT[MaxN];
+int arr[MaxN];
+int n;
+
+void update(int pos,int val)
+{
+    for( ;pos<=n;pos+= pos & -pos)
+    {
+        BIT[pos]+=val;
+    }
+}
+int query(int pos)
+{
+    int sum=0;
+    for(;pos>0;pos-= pos&-pos)
+    {
+        sum+=BIT[pos];
+    }
+    return sum;
+}
+
+int main()
+{
+
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+    cin>>n;
+    for(int i=1;i<=n;i++)
+    {
+        cin>>arr[i];
+        update(i,arr[i]);
+    }
+//    cout<<query(n)<<endl;
+//    cout<<query(n)-query(3)<<endl;
+
+
+//#ifdef LOCAL_DEFINE
+  //  cerr << "Time elapsed: " << 1.0 * clock() / CLOCKS_PER_SEC << " s.\n";
+// #endif
+///Before submit=>
+///    *check for integer overflow,array bounds
+///    *check for n=1
+}
