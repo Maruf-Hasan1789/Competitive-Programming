@@ -1,0 +1,150 @@
+
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
+#include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+
+using namespace std;
+using namespace __gnu_pbds;
+
+
+
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<ll,ll>
+#define pll pair<ll,ll>
+#define MaxN 201007
+#define INF 1e9
+#define INFL 1e12
+#define PI acos(-1)
+#define mp make_pair
+
+typedef tree<ll,null_type,less<ll>,rb_tree_tag,tree_order_statistics_node_update>ordered_set;
+
+//const ll fx[]= {+1,-1,+0,+0};
+//const ll fy[]= {+0,+0,+1,-1};
+//const ll fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const ll fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const ll fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const ll fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+
+
+ll gcd(ll a, ll b)
+{
+ return b ? gcd(b, a%b) : a;
+}
+
+ll bigmod(ll b,ll p,ll m)
+{
+    ll res=1LL%m;
+    ll x=b%m;
+    while(p)
+    {
+        if( p & 1LL )res=(res*x) % m;
+        x=(x*x)%m;
+        p >>=1LL;
+    }
+    return res;
+}
+
+vector<ll>edge[MaxN],cost[MaxN];
+
+ll parent[MaxN];
+ll source,destination;
+bool visited[MaxN];
+ll d[MaxN];
+
+struct data
+{
+    ll city,dist;
+    bool operator<(const data& p)const
+    {
+        return dist>p.dist;
+    }
+};
+
+
+ll dijkstra(ll source,ll destination)
+{
+
+    for(ll i=0;i<MaxN;i++)
+    {
+        d[i]=INFL;
+        parent[i]=-1;
+    }
+    priority_queue<data>pq;
+    data u,v;
+    u.city=source;
+    u.dist=0;
+    pq.push(u);
+    d[source]=0;
+    while(!pq.empty())
+    {
+        u=pq.top();
+        pq.pop();
+        ll ucost=d[u.city];
+        for(ll i=0;i<edge[u.city].size();i++)
+        {
+            v.city=edge[u.city][i];
+            v.dist=cost[u.city][i]+ucost;
+            if(d[v.city]>v.dist)
+            {
+                d[v.city]=v.dist;
+                parent[v.city]=u.city;
+                pq.push(v);
+            }
+        }
+    }
+    return d[destination];
+}
+
+void prllpath(ll x)
+{
+    if(x==1)
+    {
+        cout<<1<<" ";
+        return;
+    }
+    prllpath(parent[x]);
+    cout<<x<<" ";
+}
+
+int main()
+{
+
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+    ll n,m;
+    cin>>n>>m;
+    data get;
+    for(ll i=0;i<m;i++)
+    {
+        ll u,v,w;
+        cin>>u>>v>>w;
+        edge[u].pb(v);
+        edge[v].pb(u);
+        cost[u].pb(w);
+        cost[v].pb(w);
+    }
+    ll ans=dijkstra(1,n);
+    if(ans>=INFL)
+    {
+        cout<<-1<<endl;
+        return 0;
+    }
+    prllpath(n);
+    cout<<endl;
+
+//#ifdef LOCAL_DEFINE
+  //  cerr << "Time elapsed: " << 1.0 * clock() / CLOCKS_PER_SEC << " s.\n";
+// #endif
+///Before submit=>
+///    *check for lleger overflow,array bounds
+///    *check for n=1
+}
