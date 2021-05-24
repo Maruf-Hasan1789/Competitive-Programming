@@ -1,0 +1,122 @@
+
+//In the Name of Allah Most Gracious, Most Merciful//
+/*If you want something you've never had, you have  to do something you never did.*/
+
+#include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+
+using namespace std;
+using namespace __gnu_pbds;
+
+
+
+
+
+#define pb push_back
+#define ll long long
+#define pii pair<int,int>
+#define pll pair<ll,ll>
+#define MaxN 201007
+#define INF 1e9
+#define INFL 1e18
+#define PI acos(-1)
+#define mp make_pair
+
+typedef tree<int,null_type,less<int>,rb_tree_tag,tree_order_statistics_node_update>ordered_set;
+
+//const int fx[]= {+1,-1,+0,+0};
+//const int fy[]= {+0,+0,+1,-1};
+//const int fx[]={+0,+0,+1,-1,-1,+1,-1,+1};   // Kings Move
+//const int fy[]={-1,+1,+0,+0,+1,+1,-1,-1};  // Kings Move
+//const int fx[]={-2, -2, -1, -1,  1,  1,  2,  2};  // Knights Move
+//const int fy[]={-1,  1, -2,  2, -2,  2, -1,  1}; // Knights Move
+
+
+int gcd(int a, int b)
+{
+ return b ? gcd(b, a%b) : a;
+}
+
+ll bigmod(ll b,ll p,ll m)
+{
+    ll res=1LL%m;
+    ll x=b%m;
+    while(p)
+    {
+        if( p & 1LL )res=(res*x) % m;
+        x=(x*x)%m;
+        p >>=1LL;
+    }
+    return res;
+}
+//adjacency list
+//adj[i] contains all neighbors of i
+vector<int> adj[MaxN];
+
+//functions as defined above
+int f[MaxN],g[MaxN],diameter;
+
+//pV is parent of node V
+void dfs(int V, int pV){
+    //this vector will store f for all children of V
+    vector<int> fValues;
+
+    //traverse over all children
+    for(auto v: adj[V]){
+    if(v == pV) continue;
+    dfs(v, V);
+    fValues.push_back(f[v]);
+    }
+
+    //sort to get top two values
+    //you can also get top two values without sorting(think about it) in O(n)
+    //current complexity is n log n
+    sort(fValues.begin(),fValues.end());
+
+    //update f for current node
+    f[V] = 1;
+    if(fValues.size()==0)
+        f[V]=0;
+    if(fValues.size()) f[V] += fValues.back();
+    if(fValues.size()>=2)
+         g[V] =2+fValues.back() + fValues[fValues.size()-2];
+
+    diameter = max(diameter, max(f[V], g[V]));
+}
+
+
+
+
+int main()
+{
+
+   //  #ifndef ONLINE_JUDGE
+   //    freopen("input.txt","r",stdin);
+   //    freopen("output.txt","w",stdout);
+  //   #endif
+ 	ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int n;
+    cin>>n;
+    for(int i=1;i<n;i++)
+    {
+        int x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    dfs(1,0);
+    cout<<diameter<<endl;
+
+
+
+//#ifdef LOCAL_DEFINE
+  //  cerr << "Time elapsed: " << 1.0 * clock() / CLOCKS_PER_SEC << " s.\n";
+// #endif
+///Before submit=>
+///    *check for integer overflow,array bounds
+///    *check for n=1
+}
+
+
