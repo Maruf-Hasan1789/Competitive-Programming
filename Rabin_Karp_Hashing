@@ -16,9 +16,9 @@ using namespace std;
 #define INFL 1e18
 #define PI acos(-1)
 #define mp make_pair
-
-
-
+    //for taking a segment
+ //  ll hash_pre=((prefix_hash[r]-(prefix_hash[l-1]*prr[r-l+1])%MOD)+MOD)%MOD;
+ //   ll hash_suff=((suffix_hash[l]-(suffix_hash[r+1]*prr[r-l+1])%MOD)+MOD)%MOD;
 ll compute_hash1(string const& s)
 {
     int p=31;
